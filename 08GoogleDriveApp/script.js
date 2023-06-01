@@ -10,8 +10,6 @@ btn.addEventListener("click", generateLink);
 
 function generateLink(e) {
     e.preventDefault();
-    // console.log(gLink.value);
-    const gLinkValue = document.getElementById("glink").value;
     const confirmLink = glink.value.includes("https://drive.google.com/file/d/");
 
     if (confirmLink == true) {
@@ -25,9 +23,9 @@ function generateLink(e) {
             if (target.value == "") {
                 alert("Please generate a Download Link")
             } else {
-                target.select();
-                document.execCommand("copy");
-                alert("Link has been copied to clipboard");
+                navigator.clipboard.writeText(target.value).then(() => {
+                    alert("Link has been copied to clipboard");
+                })
             }
         }
 
