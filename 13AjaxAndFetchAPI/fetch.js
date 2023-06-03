@@ -1,5 +1,3 @@
-// LOAD ALL USERS
-
 const btn = document.getElementById("btn");
 btn.addEventListener("click", getUsers);
 
@@ -7,13 +5,12 @@ function getUsers(e) {
     e.preventDefault();
 
     fetch("users.json")
-        .then(function(response) {
+        .then(function (response) {
             return response.json();
         })
-        .then(function(data) {
-            // console.log(data);
+        .then(function (data) {
             let output = "";
-            data.forEach(function(user) {
+            data.forEach(function (user) {
                 output += `
                     <hr>
                     <ul>
@@ -23,7 +20,6 @@ function getUsers(e) {
                         <li>Email: ${user.email}</li>
                     </ul>
                 `;
-
             })
             document.getElementById("users").innerHTML = output;
         })
