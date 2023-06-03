@@ -1,4 +1,3 @@
-// CREATE A QUIZ CLASS
 class Quiz {
     constructor(questions) {
         this.score = 0;
@@ -22,7 +21,6 @@ class Quiz {
     }
 }
 
-// Create a question Class
 class Question {
     constructor(text, choices, answer) {
         this.text = text;
@@ -35,16 +33,13 @@ class Question {
     }
 }
 
-// NOW DISPLAY THE QUESTIONS
 function displayQuestion() {
     if (quiz.isEnded()) {
         showScores();
     } else {
-        // show question
         let questionElement = document.getElementById("question");
         questionElement.innerHTML = quiz.getQuestionIndex().text;
 
-        // show options
         let choices = quiz.getQuestionIndex().choices;
         for (let i = 0; i < choices.length; i++) {
             let choiceElement = document.getElementById("choice" + i);
@@ -54,38 +49,34 @@ function displayQuestion() {
 
         showProgress();
     }
-};
+}
 
-// GUESS ANSWER
 function guess(id, guess) {
     let button = document.getElementById(id);
-    button.onclick = function() {
+    button.onclick = function () {
         quiz.guess(guess);
-        displayQuestion();
+        displayQuestion()
     }
-};
+}
 
-// SHOW QUIZ PROGRESS
 function showProgress() {
     let currentQuestionNumber = quiz.questionIndex + 1;
-    let ProgressElement = document.getElementById("progress");
-    ProgressElement.innerHTML =
-        `Question ${currentQuestionNumber} of ${quiz.questions.length}`;
-};
+    let progressElement = document.getElementById("progress");
+    progressElement.innerHTML = `Question ${currentQuestionNumber} of ${quiz.questions.length}`;
+}
 
-// SHOW SCORES
 function showScores() {
-    let quizEndHTML =
-        `
-    <h1>Quiz Completed</h1>
-    <h2 id='score'> Your scored: ${quiz.score} of ${quiz.questions.length}</h2>
-    <div class="quiz-repeat">
-        <a href="index.html">Take Quiz Again</a>
-    </div>
-    `;
+    let quizEndHTML = `
+     <h1>Quiz Completed</h1>
+     <h2 id="score">You Scored: ${quiz.score} of ${quiz.questions.length}</h2>
+     <div class="quiz-repeat">
+         <a href="index.html">Take Quiz Again</a>
+     </div>
+`;
     let quizElement = document.getElementById("quiz");
     quizElement.innerHTML = quizEndHTML;
-};
+}
+
 
 // create questions here
 let questions = [
@@ -106,22 +97,18 @@ let questions = [
     )
 ];
 
-// INITIALIZE quiz
 let quiz = new Quiz(questions);
 
-// display questions
 displayQuestion();
 
-
-// Add A CountDown for the Quiz
 let time = 10;
 let quizTimeInMinutes = time * 60 * 60;
-let quizTime = quizTimeInMinutes / 60;
+quizTime = quizTimeInMinutes / 60;
 
 let counting = document.getElementById("count-down");
 
-function startCountdown() {
-    let quizTimer = setInterval(function() {
+function startCountDown() {
+    let quizTimer = setInterval(function () {
         if (quizTime <= 0) {
             clearInterval(quizTimer);
             showScores();
@@ -131,7 +118,7 @@ function startCountdown() {
             let min = Math.floor(quizTime / 60) % 60;
             counting.innerHTML = `TIME: ${min} : ${sec}`;
         }
-    }, 1000);
+    }, 1000)
 }
 
-startCountdown();
+startCountDown();
