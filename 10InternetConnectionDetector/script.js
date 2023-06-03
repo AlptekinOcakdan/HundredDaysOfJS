@@ -13,28 +13,25 @@ async function connectionStatus() {
         setColor();
         return fetchResult.status >= 200 && fetchResult.status < 300;
     } catch (error) {
-        console.error(error);
-        statusDisplay.textContent = "OOPS!!! Your Internet Connection is Down.";
+        // console.log(error);
+        statusDisplay.textContent = "OOPS!!! Your Internet connection is down";
         image.src = "./images/offline.png";
         bgColor.classList.remove("online");
     }
 }
-
-
-// Monitor the connection
-setInterval(async () => {
+// Monitoring the status of Connection.
+setInterval(async ()=>{
     const result = await connectionStatus();
-    if (result) {
-        statusDisplay.textContent = "You're ONLINE!!! Connection looks good.";
+    if (result){
+        statusDisplay.textContent="You are ONLINE.";
         setColor();
     }
-}, 5000);
-
-//   Check Connection When Page Loads
-window.addEventListener("load", async (event) => {
-    if (connectionStatus()) {
-        statusDisplay.textContent = "Online"
-    } else {
-        statusDisplay.textContent = "OFFline"
+},5000);
+//Checks connection when the page loads.
+window.addEventListener("load",async (event)=>{
+    if (connectionStatus()){
+        statusDisplay.textContent="You are ONLINE";
+    }else {
+        statusDisplay.textContent="You are OFFLINE";
     }
-});
+})

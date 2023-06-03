@@ -20,12 +20,12 @@
 <script>
     window.addEventListener("load", (event) => {
         const statusDisplay = document.getElementById("status");
-        statusDisplay.textContent = navigator.onLine ? "Online" : "OFFline";
+        statusDisplay.textContent = navigator.onLine ? "Online" : "Offline";
     });
 
     window.addEventListener("offline", (event) => {
         const statusDisplay = document.getElementById("status");
-        statusDisplay.textContent = "OFFline";
+        statusDisplay.textContent = "Offline";
     });
 
     window.addEventListener("online", (event) => {
