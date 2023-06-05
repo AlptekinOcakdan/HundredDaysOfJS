@@ -1,65 +1,34 @@
-let today = new Date();
+function getCurrentDateTime() {
+    const date = new Date();
 
-function getDate(d) {
-  let months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "June",
-    "July",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+    const day = date.toLocaleDateString("en-US", { weekday: "long" });
+    const month = date.toLocaleDateString("en-US", { month: "short" });
+    const dayOfMonth = date.getDate();
+    const year = date.getFullYear();
+    const dateString = `${day}, ${dayOfMonth} ${month} ${year}`;
 
-  let day = days[d.getDay()];
-  let date = d.getDate();
-  let month = months[d.getMonth()];
-  let year = d.getFullYear();
+    let hour = date.getHours();
+    const minute = date.getMinutes();
+    const second = date.getSeconds();
+    let session = hour >= 12 ? "PM" : "AM";
 
-  return `${day}, ${date} ${month} ${year}`;
+    hour = hour % 12 || 12;
+
+    const timeString = `${hour}:${padZero(minute)}:${padZero(second)} ${session}`;
+
+    return { date: dateString, time: timeString };
 }
 
-const date = document.querySelector(".date");
-date.innerHTML = getDate(today);
-
-// Get Time
-function showTime() {
-  let date = new Date();
-
-  let h = date.getHours();
-  let m = date.getMinutes();
-  let s = date.getSeconds();
-  let session = "AM";
-
-  if (h == 0) {
-    h = 12;
-  }
-  if (h > 12) {
-    h = h - 12;
-    session = "PM";
-  }
-
-  // Append 0 to single digit
-  h = h < 10 ? "0" + h : h;
-  m = m < 10 ? "0" + m : m;
-  s = s < 10 ? "0" + s : s;
-
-  let time = `${h}:${m}:${s} ${session}`;
-  document.querySelector(".time").innerHTML = time;
+function padZero(number) {
+    return number.toString().padStart(2, "0");
 }
 
-setInterval(showTime, 1000);
+function updateDateTime() {
+    const { date, time } = getCurrentDateTime();
+    document.querySelector(".date").textContent = date;
+    document.querySelector(".time").textContent = time;
+}
+
+updateDateTime();
+
+setInterval(updateDateTime, 1000);
