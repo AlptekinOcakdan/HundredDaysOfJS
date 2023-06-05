@@ -3,29 +3,58 @@ const result = document.querySelector("p");
 const clear = document.querySelector(".clear");
 
 for (let i = 0; i < keys.length; i++) {
-  if (keys[i].innerHTML === "=") {
-    keys[i].addEventListener("click", calculate);
-  } else {
-    keys[i].addEventListener("click", addToCurrentValue(i));
-  }
+    keys[i].addEventListener("click", handleClick);
 }
 
-function addToCurrentValue(i) {
-  return () => {
-    if (keys[i].innerHTML === "÷") {
-      result.innerHTML += "/";
-    } else if (keys[i].innerHTML === "x") {
-      result.innerHTML += "*";
+function handleClick() {
+    const key = this.innerHTML;
+
+    if (key === "=") {
+        calculate();
+    } else if (key === "÷") {
+        addToCurrentValue("/");
+    } else if (key === "x") {
+        addToCurrentValue("*");
     } else {
-      result.innerHTML += keys[i].innerHTML;
+        addToCurrentValue(key);
     }
-  };
+}
+
+function addToCurrentValue(value) {
+    result.innerHTML += value;
 }
 
 function calculate() {
-  return (result.innerHTML = eval(result.innerHTML));
+  const expression = result.innerHTML;
+  const safeExpression = sanitizeExpression(expression);
+
+  if (isExpressionValid(safeExpression)) {
+    try {
+      const fn = new Function('return ' + safeExpression);
+      result.innerHTML = fn();
+    } catch (error) {
+      result.innerHTML = 'Error';
+    }
+  } else {
+    result.innerHTML = 'Invalid Expression';
+  }
 }
 
+function sanitizeExpression(expression) {
+  return expression.replace(/[^\d+\-*/.%]/g, '');
+}
+
+function isExpressionValid(expression) {
+  const invalidPatterns = [
+    /^\d*\/0+$/,
+    /\.\d*\./,
+    /[+\-*/.]{2,}/,
+  ];
+
+  return !invalidPatterns.some(pattern => pattern.test(expression));
+}
+
+
 clear.addEventListener("click", () => {
-  result.innerHTML = "";
+    result.innerHTML = "";
 });
