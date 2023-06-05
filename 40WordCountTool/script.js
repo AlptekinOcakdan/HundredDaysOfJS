@@ -1,49 +1,51 @@
-let input = document.querySelector(".input"),
-  character = document.querySelector(".character"),
-  word = document.querySelector(".word"),
-  readingTime = document.querySelector(".reading-time"),
-  wordLimit = document.querySelector(".word-limit"),
-  WORD_LIMIT = 10;
+const input = document.querySelector(".input");
+const character = document.querySelector(".character");
+const word = document.querySelector(".word");
+const readingTime = document.querySelector(".reading-time");
+const wordLimit = document.querySelector(".word-limit");
+const WORD_LIMIT = 10;
 
-input.addEventListener("keyup", characterCount);
-input.addEventListener("keyup", wordCounter);
+input.addEventListener("input", updateCounts);
+input.addEventListener("keydown", checkWordLimit);
 
-function characterCount() {
-  character.innerHTML = input.value.length;
+function updateCounts() {
+    const inputText = input.value;
+    const inputLength = inputText.length;
+    const words = inputText.match(/\b[-?(\w+)?]+\b/gi);
+    const wordCount = words ? words.length : 0;
+    const remainingWords = WORD_LIMIT - wordCount;
+
+    character.textContent = inputLength.toString();
+    word.textContent = wordCount.toString();
+    wordLimit.textContent = remainingWords >= 0 ? remainingWords.toString() : 0;
+
+    // Reading time based on 225 words/min
+    const readingSeconds = Math.floor((wordCount * 60) / 225);
+    const readingMinutes = Math.floor(readingSeconds / 60);
+    const seconds = readingSeconds - readingMinutes * 60;
+    readingTime.textContent =
+        readingMinutes > 0 ? `${readingMinutes}m ${seconds}s` : `${seconds}s`;
 }
 
-function wordCounter(e) {
-  let words = input.value.match(/\b[-?(\w+)?]+\b/gi);
+function checkWordLimit(e) {
+  const words = input.value.match(/\b[-?(\w+)?]+\b/gi);
+  const wordCount = words ? words.length : 0;
 
-  if (words) {
-    word.innerHTML = words.length;
-    wordLimit.innerHTML = WORD_LIMIT - words.length;
-  } else {
-    word.innerHTML = 0;
-  }
-
-  //   Word Limit Block of Code
-  input.addEventListener("keydown", function (e) {
-    words = input.value.match(/\b[-?(\w+)?]+\b/gi);
-    if (words) {
-      if (words.length > WORD_LIMIT - 1 && e.code !== "Backspace") {
-        e.preventDefault();
-        // console.log("Word limit reached");
-      }
-    }
-  });
-
-  //   Reading time based on 225 words/min
-  if (words) {
-    let seconds = Math.floor((words.length * 60) / 225);
-    if (seconds > 59) {
-      let minutes = Math.floor(seconds / 60);
-      seconds = seconds - minutes * 60;
-      readingTime.innerHTML = minutes + "m" + seconds + "s";
-    } else {
-      readingTime.innerHTML = seconds + "s";
-    }
-  } else {
-    readingTime.innerHTML = "0s";
+  if (wordCount >= WORD_LIMIT && e.code !== "Backspace" && !isSpaceKey(e) && !isLastWord(e)) {
+    e.preventDefault();
   }
 }
+
+function isLastWord(e) {
+  const inputValue = input.value;
+  const lastSpaceIndex = inputValue.lastIndexOf(" ");
+  const lastWord = inputValue.substring(lastSpaceIndex + 1);
+  return lastWord.length >= 1 && !isSpaceKey(e);
+}
+
+
+function isSpaceKey(e) {
+    return e.code === "Space" || e.keyCode === 32;
+}
+
+
