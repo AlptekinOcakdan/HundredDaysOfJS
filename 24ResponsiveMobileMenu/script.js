@@ -40,8 +40,6 @@ function handleResize() {
     }
 }
 
-// Add event listener for window resize
 window.addEventListener("resize", handleResize);
 
-// Call handleResize initially to set the initial state based on window width
 handleResize();
