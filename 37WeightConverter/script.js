@@ -1,40 +1,33 @@
-let pounds = document.querySelector(".pounds"),
-  kilograms = document.querySelector(".kilograms"),
-  grams = document.querySelector(".grams"),
-  ounces = document.querySelector(".ounces"),
-  form = document.querySelector("form");
+const pounds = document.querySelector(".pounds");
+const kilograms = document.querySelector(".kilograms");
+const grams = document.querySelector(".grams");
+const ounces = document.querySelector(".ounces");
+const form = document.querySelector("form");
 
 form.addEventListener("input", convertWeight);
 
 function convertWeight(e) {
+  const value = e.target.valueAsNumber;
+
   if (e.target.classList.contains("pounds")) {
-    let x = e.target.value;
-    kilograms.value = (x / 2.2046).toFixed(2);
-    grams.value = (x / 0.0022046).toFixed(2);
-    ounces.value = (x * 16).toFixed(2);
-  }
-
-  if (e.target.classList.contains("kilograms")) {
-    let x = e.target.value;
-    pounds.value = x * 2.2046;
-    grams.value = x * 1000;
-    ounces.value = x * 35.274;
-  }
-
-  if (e.target.classList.contains("grams")) {
-    let x = e.target.value;
-    kilograms.value = x / 1000;
-    pounds.value = x * 0.0022046;
-    ounces.value = x * 0.035274;
-  }
-
-  if (e.target.classList.contains("ounces")) {
-    let x = e.target.value;
-    kilograms.value = x / 35.274;
-    grams.value = x / 0.035274;
-    pounds.value = x * 0.0625;
+    kilograms.value = (value / 2.2046).toFixed(2);
+    grams.value = (value / 0.0022046).toFixed(2);
+    ounces.value = (value * 16).toFixed(2);
+  } else if (e.target.classList.contains("kilograms")) {
+    pounds.value = (value * 2.2046).toFixed(2);
+    grams.value = (value * 1000).toFixed(2);
+    ounces.value = (value * 35.274).toFixed(2);
+  } else if (e.target.classList.contains("grams")) {
+    kilograms.value = (value / 1000).toFixed(2);
+    pounds.value = (value * 0.0022046).toFixed(2);
+    ounces.value = (value * 0.035274).toFixed(2);
+  } else if (e.target.classList.contains("ounces")) {
+    kilograms.value = (value / 35.274).toFixed(2);
+    grams.value = (value / 0.035274).toFixed(2);
+    pounds.value = (value * 0.0625).toFixed(2);
   }
 }
+
 
 // -- From pounds to --
 // kilograms = x / 2.2046;
