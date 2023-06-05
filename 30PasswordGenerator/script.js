@@ -15,7 +15,6 @@ const pLength = document.getElementById("p-length"),
 
 submit.addEventListener("click", () => {
     let initialPassword = empty;
-    // ADD CHARACTER IF AN OPTION IS CHECKED
     upperCase.checked ? (initialPassword += uCase) : "";
     lowerCase.checked ? (initialPassword += lCase) : "";
     pNumber.checked ? (initialPassword += number) : "";
