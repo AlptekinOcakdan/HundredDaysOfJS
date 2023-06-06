@@ -24,9 +24,8 @@ html {
 
 body {
     font-family: 'Open Sans', sans-serif;
-    background: url(./images/mysic.jpg) no-repeat center;
     background-size: cover;
-    background-attachment: fixed;
+    background: url(./images/mysic.jpg) no-repeat fixed center;
     height: 100vh;
     position: relative;
 }
@@ -35,26 +34,28 @@ body::after {
     content: "";
     position: fixed;
     top: 0;
-    left: 50%; 
+    left: 50%;
     height: 100%;
     width: 900px;
-    background: rgba(0,0,0,.6);
-    background-attachment: fixed;
+    background: rgba(0, 0, 0, .6) fixed;
     z-index: -1;
     transform: translateX(-50%);
-    
+
 }
 
 /* UTILITY */
 .p-small {
     padding-bottom: 5px;
 }
+
 .p-medium {
     padding-bottom: 10px;
 }
+
 .p-y {
     padding: 10px 0;
 }
+
 .m-y {
     margin: 10px 0;
 }
@@ -74,7 +75,7 @@ img {
     padding: 0 20px;
 }
 
-header .container{
+header .container {
     padding: 4rem 0;
     text-align: center;
     background-color: var(--color-sec);
@@ -96,6 +97,7 @@ form button {
     font-size: 1.6rem;
     font-family: inherit;
 }
+
 form input {
     width: 50%;
     border-radius: 1rem 0 1rem 0;
@@ -128,7 +130,7 @@ section .container {
 .songs {
     width: 70%;
     list-style: none;
-    margin:0 auto;
+    margin: 0 auto;
     padding: 2rem 0;
 }
 
@@ -142,7 +144,7 @@ section .container {
     border-bottom: 1px solid #eee;
 }
 
-.songs li span{
+.songs li span {
     font-size: 1.4rem;
     background-color: var(--color-primary);
     padding: 5px;

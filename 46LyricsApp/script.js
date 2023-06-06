@@ -4,64 +4,79 @@ const result = document.getElementById("result");
 
 const apiURL = "https://api.lyrics.ovh";
 
-// Get Search Value
 form.addEventListener("submit", e => {
     e.preventDefault();
-    searchValue = search.value.trim();
-
+    const searchValue = search.value.trim();
+    console.log(searchValue);
     if (!searchValue) {
         alert("Nothing to search");
     } else {
-        beginSearch(searchValue);
+        beginSearch(searchValue)
+            .then(data => {
+                displayData(data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
-})
+});
 
-// Search function
 async function beginSearch(searchValue) {
-    const searchResult = await fetch(`${apiURL}/suggest/${searchValue}`);
-    const data = await searchResult.json();
+    try {
+        const searchResult = await fetch(`${apiURL}/suggest/${searchValue}`);
+        const data = await searchResult.json();
 
-    displayData(data);
+        displayData(data);
+    } catch (error) {
+        displayError("Failed to fetch search results");
+    }
 }
 
-// Display Search Result
 function displayData(data) {
     result.innerHTML = `
     <ul class="songs">
-      ${data.data
-        .map(song=> `<li>
+        ${data.data
+        .map(
+            song => `<li>
                     <div>
-                        <strong>${song.artist.name}</strong> -${song.title} 
+                        <strong>${song.artist.name}</strong> - ${song.title}
                     </div>
-                    <span data-artist="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</span>
+                    <button data-artist="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</button>
                 </li>`
         )
-        .join('')}
-    </ul>
-  `;
+        .join("")}
+    </ul>`;
 }
 
-//event listener in get lyrics button
-result.addEventListener('click', e=>{
+result.addEventListener("click", async e => {
     const clickedElement = e.target;
 
-    //checking clicked elemet is button or not
-    if (clickedElement.tagName === 'SPAN'){
-        const artist = clickedElement.getAttribute('data-artist');
-        const songTitle = clickedElement.getAttribute('data-songtitle');
-        
-        getLyrics(artist, songTitle)
-    }
-})
+    if (clickedElement.tagName === "BUTTON") {
+        const artist = clickedElement.getAttribute("data-artist");
+        const songTitle = clickedElement.getAttribute("data-songtitle");
 
-// Get lyrics for song
+        try {
+            const lyrics = await getLyrics(artist, songTitle);
+            displayLyrics(artist, songTitle, lyrics);
+        } catch (error) {
+            displayError("Failed to fetch lyrics");
+        }
+    }
+});
+
 async function getLyrics(artist, songTitle) {
     const response = await fetch(`${apiURL}/v1/${artist}/${songTitle}`);
     const data = await response.json();
-  
-    const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>');
-  
-    result.innerHTML = `<h2><strong>${artist}</strong> - ${songTitle}</h2>
+
+    return data.lyrics.replace(/(\r\n|\r|\n)/g, "<br>");
+}
+
+function displayLyrics(artist, songTitle, lyrics) {
+    result.innerHTML = `
+    <h2><strong>${artist}</strong> - ${songTitle}</h2>
     <p>${lyrics}</p>`;
-  
-  }
+}
+
+function displayError(message) {
+    result.innerHTML = `<p class="error-message">${message}</p>`;
+}
