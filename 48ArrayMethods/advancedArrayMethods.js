@@ -60,18 +60,5 @@ const sum = numbers.reduce((accumulator, currentValue) => {
 console.log(sum);
 
 
-/*
-filter , find,  map
-reduce, indexOf, findIndex, startsWith, endsWith, split, join, reverse,
 
-    obj methods
-keys, values,entries, hasOwnProperty, hasOwn,
-
-    Classes
-declare class, inherit (extends)
-Instance Method, Class method, differences (! will ask )
-API requests,
-    fetch data, localstorage,
-    asynchronous js, promises, async, await,  That's it
-*/
 
